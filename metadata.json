@@ -1,0 +1,6 @@
+{
+  "name": "Earthalive Resort Management",
+  "description": "Luxury resort operations and booking management platform for Earthalive in Bangalore, India.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

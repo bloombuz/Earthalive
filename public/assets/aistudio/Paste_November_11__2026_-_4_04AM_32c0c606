@@ -1,0 +1,1542 @@
+# BUILD A COMPLETE WEB APPLICATION — EARTHALIVE
+
+You are a senior full-stack developer, product designer, UI/UX specialist, and database architect.
+
+Build a fully functional, production-ready resort management web application called **Earthalive**.
+
+Earthalive is a resort in Bangalore, India. This application will be used by multiple teams to manage accommodation bookings, guest information, food charges, payments, availability, and revenue.
+
+**IMPORTANT: I have uploaded two reference images.**
+
+- **Image 1:** The exact UI/UX design reference for the application.
+- **Image 2:** The Earthalive logo reference.
+
+Follow Image 1 extremely closely in design, layout, navigation, colors, typography, spacing, component styling, cards, tables, and interactions.
+
+Use Image 2 for the application branding. Extract and use the circular tree symbol without the unrelated "MINIMAL DESIGNS" text. Preserve the original logo geometry.
+
+**Copy only the design language from Image 1, not the sample resort data or its functionality.**
+
+Build the Earthalive functions described below.
+
+---
+
+# 1. DESIGN SYSTEM — EXTREMELY IMPORTANT
+
+The entire application must look and feel almost identical to Image 1.
+
+## Visual direction
+
+Create a premium, sophisticated resort operations dashboard with:
+
+- Minimalist luxury resort aesthetics
+- Soft mint-green and pastel-aqua backgrounds
+- Warm cream/off-white surfaces
+- Deep forest-green and navy accents
+- Rounded cards and pill-shaped buttons
+- Subtle glassmorphism
+- Transparent and translucent panels
+- Soft shadows
+- Beautiful nature photography
+- Compact, elegant typography
+- Spacious layout with excellent information hierarchy
+- Smooth hover effects and subtle transitions
+
+Use a palette inspired by the dashboard screenshot and supplied logo.
+
+Suggested colors:
+
+- Deep forest green: `#092D26`
+- Deep navy: `#1C3048`
+- Soft mint: `#DDF5E8`
+- Light aqua: `#D7F3F0`
+- Cream: `#FFF8E9`
+- White: `#FFFFFF`
+- Warm peach accent: `#E7A98F`
+- Muted gray: `#788783`
+
+Adjust exact colors based on the uploaded reference images.
+
+## Overall layout
+
+On desktop, recreate the visual structure of the reference dashboard:
+
+1. A full-width resort background image behind the top section.
+2. A floating, pill-based navigation bar at the top.
+3. Earthalive branding on the top-left.
+4. User profile and utility icons on the top-right.
+5. A large section heading with contextual information.
+6. Compact KPI indicators in rounded pills.
+7. A large translucent table/card on the left.
+8. A detailed guest or booking information card on the right.
+9. Beautiful gradients fading into the page background.
+
+The design must feel like a polished, custom-built hospitality SaaS product.
+
+Do not use generic admin templates, oversized cards, random bright colors, or unnecessary dashboard widgets.
+
+## Responsive design
+
+The application must work on:
+
+- Desktop
+- Laptop
+- iPad/tablet
+- iPhone and Android phones
+
+On smaller screens, reorganize tables into compact booking cards, make the calendar horizontally usable, and adapt navigation without breaking the visual aesthetic.
+
+## Important design requirement
+
+Every section must share the exact same design language. Do not create one beautifully designed dashboard while leaving calendar, bookings, payments, or settings pages looking generic.
+
+Use consistent typography, colors, spacing, rounded corners, and interactive elements throughout.
+
+---
+
+# 2. APPLICATION NAVIGATION
+
+Create the following main navigation sections:
+
+**Today | Bookings | Calendar | Accommodation | Revenue | Guests | Teams | Settings**
+
+Keep navigation compact, pill-shaped, and visually consistent with the uploaded reference.
+
+Only show sections and actions permitted for the signed-in user's role.
+
+The top-right should include:
+
+- Search
+- Notifications
+- User profile
+- Settings shortcut
+- Logout
+
+All navigation must work.
+
+---
+
+# 3. GOOGLE AUTHENTICATION
+
+Implement secure Google Sign-In using Firebase Authentication or an equivalent production-ready Google OAuth integration.
+
+Requirements:
+
+1. Users sign in using their Google account.
+2. Do not implement a normal email/password login.
+3. A new Google user must not automatically receive access to private booking information.
+4. New users must be invited or approved by an authorized team administrator.
+5. Keep users signed in securely across browser sessions.
+6. Display their Google profile name, email, and profile picture.
+7. Support secure logout.
+8. Show a branded access-pending or access-denied screen for unauthorized users.
+
+Never simulate authentication with fake user data.
+
+Authentication must actually work once the Firebase/Google OAuth configuration is connected.
+
+Use authenticated user identities for all bookings, payment records, team assignments, and audit history.
+
+---
+
+# 4. TEAMS AND PERMISSIONS
+
+The resort is managed by different teams.
+
+Create a dedicated Teams management system.
+
+## Primary team: Bloombuz
+
+**Bloombuz is the Super Admin team.**
+
+This team has the highest level of access.
+
+The Bloombuz team must be permanently protected from unauthorized ownership or access.
+
+### Initial setup
+
+The first super administrator must be assigned using a securely configured owner Google email address or a secure one-time administrative setup process.
+
+Do not allow any random user to sign up and claim Bloombuz.
+
+Once Bloombuz is securely claimed by the initial authorized owner, ordinary users cannot claim ownership.
+
+### Bloombuz permissions
+
+Bloombuz administrators can:
+
+- View every booking
+- View complete guest details
+- View complete phone numbers
+- Create, edit, and cancel bookings
+- Manage accommodation pricing
+- Change holiday pricing
+- Configure discounts
+- Manage payments
+- Access revenue reports
+- Invite users
+- Assign team membership
+- Create and name additional teams
+- Choose team administrators
+- Remove or deactivate members
+- View records created by every team
+- See which team member generated each booking
+- See who collected each payment
+- View booking modification history
+
+## Other teams
+
+Create a default secondary team named **Others**.
+
+Also allow Bloombuz administrators to create additional named teams.
+
+Each team should have:
+
+- Team name
+- Team administrator
+- List of members
+- Date created
+- Active/inactive status
+
+Only an authorized administrator can invite members or modify team membership.
+
+Bloombuz administrators can assign invited users to Bloombuz, Others, or another approved team.
+
+Non-Bloombuz team administrators can manage only their own team, within permissions granted by Bloombuz. They must not be able to grant themselves Bloombuz privileges.
+
+## Privacy requirements
+
+Members of the Others team and other restricted teams should be able to:
+
+- View booking dates
+- View which accommodations are booked
+- View available accommodations
+- See booking status
+- See relevant booking financial figures based on their access
+- Create bookings if they have booking permission
+- See bookings generated by their team
+- View their own booking performance
+
+However, when viewing other people's bookings:
+
+**Guest names must be masked.**
+
+Example: `A*** S****`
+
+**Guest phone numbers must be masked.**
+
+Example: `******4321`
+
+For unauthorized users, sensitive guest information must be masked or omitted at the database/API authorization layer, not merely hidden using CSS.
+
+Do not expose personal information through browser developer tools, search results, notifications, or exports.
+
+Authorized staff must be able to enter guest details when making a booking. Access to full guest information afterward must follow their assigned permissions.
+
+Use role-based access control enforced on the backend.
+
+---
+
+# 5. ACCOMMODATION INVENTORY
+
+Earthalive has exactly four accommodation options:
+
+1. Bunkbeds
+2. Firefly Treehouse
+3. Sunbird Treehouse
+4. Woodpecker Treehouse
+
+## Bunkbeds
+
+There are:
+
+- 24 total bunkbeds
+- Distributed across 4 containers
+- Default allocation: 6 bunkbeds per container
+
+Create four individually manageable containers:
+
+- Container 1
+- Container 2
+- Container 3
+- Container 4
+
+Each container has six individually identifiable bunkbeds by default.
+
+Allow administrators to update bed assignments or redistribute inventory in settings without accidentally altering historical bookings.
+
+Each bunkbed can accommodate one guest.
+
+### Base bunkbed price
+
+**₹1,250 per person per night.**
+
+A single guest using one bunkbed costs ₹1,250 per night before discounts and service charges.
+
+Multiple beds should be bookable under the same reservation.
+
+For example:
+
+5 guests × ₹1,250 = ₹6,250 per night.
+
+A booking can assign five individual beds, potentially across multiple containers.
+
+The system must track each bed's availability.
+
+## Treehouses
+
+There are three treehouses:
+
+- Firefly
+- Sunbird
+- Woodpecker
+
+Each treehouse has a maximum capacity of **6 guests**.
+
+### Treehouse base pricing
+
+Each treehouse costs:
+
+**₹6,000 per night for up to 4 guests.**
+
+The minimum price is ₹6,000 even when only one, two, or three guests stay.
+
+For each guest beyond four, charge:
+
+**₹1,500 per additional guest per night.**
+
+The treehouse pricing must work as follows:
+
+| Guests | Base price per night |
+|---|---:|
+| 1 | ₹6,000 |
+| 2 | ₹6,000 |
+| 3 | ₹6,000 |
+| 4 | ₹6,000 |
+| 5 | ₹7,500 |
+| 6 | ₹9,000 |
+
+Never allow more than six guests in one treehouse.
+
+## Accommodation management
+
+Provide a visual card for each treehouse displaying:
+
+- Accommodation name
+- Image
+- Capacity
+- Current status
+- Base price
+- Availability
+- Next check-in
+- Next check-out
+
+For bunkbeds, display:
+
+- Total beds: 24
+- Available beds
+- Booked beds
+- Occupancy percentage
+- Availability by container
+
+Allow authorized administrators to mark accommodation unavailable for maintenance or internal use.
+
+These blocks must reduce real availability without generating fake guest bookings.
+
+---
+
+# 6. BOOKING CALENDAR — CORE FEATURE
+
+Create a complete interactive calendar.
+
+This is one of the most important parts of the application.
+
+## Calendar functionality
+
+Every user should be able to check availability.
+
+Provide a read-only availability view accessible without signing in, showing only accommodation occupancy information.
+
+Signed-in authorized users can manage bookings according to their permissions.
+
+### Calendar views
+
+Create:
+
+- Monthly view
+- Weekly view
+- Daily view
+
+Provide a date picker for jumping to a specific date.
+
+## Calendar display
+
+For every date, show the availability of:
+
+**Treehouses**
+
+- Firefly — Available / Booked
+- Sunbird — Available / Booked
+- Woodpecker — Available / Booked
+
+**Bunkbeds**
+
+- Available: X/24
+- Booked: X/24
+
+Allow expanding the bunkbed section to show:
+
+- Container 1: X/6
+- Container 2: X/6
+- Container 3: X/6
+- Container 4: X/6
+
+## Interactions
+
+When someone clicks a date, open an elegant side panel or modal using the same design language as the reference image.
+
+Show:
+
+- Selected date
+- Available accommodations
+- Booked accommodations
+- Number of available bunkbeds
+- Number of booked bunkbeds
+- Booking status indicators
+- Button to create a booking, visible to authorized users
+
+Clicking an existing booking should open its details according to the user's permissions.
+
+Clicking an available treehouse should preselect it in the new-booking form.
+
+## Multiple-day bookings
+
+A booking must block accommodation availability across every occupied night.
+
+For example:
+
+Booking From: 10 December
+
+Booking To: 13 December
+
+The accommodation is occupied for the nights of the 10th, 11th, and 12th.
+
+It becomes available for another check-in on the 13th, subject to any separately configured turnover restrictions.
+
+Use check-in-inclusive and check-out-exclusive date logic consistently.
+
+## Prevent double bookings
+
+The system must never allow two active reservations for the same treehouse on overlapping nights.
+
+For bunkbeds, prevent booking more than the available bed capacity for any occupied night.
+
+Use transactional server-side validation to prevent concurrent double bookings, even if two team members submit reservations simultaneously.
+
+Do not rely only on front-end availability checks.
+
+Cancellation should release inventory.
+
+All availability should update in real time for every user.
+
+---
+
+# 7. CREATE A BOOKING
+
+Create an elegant booking form with a clear multi-section workflow.
+
+The booking form should visually match the reference dashboard.
+
+## Section A — Guest information
+
+Fields:
+
+- Guest full name
+- Phone number
+- Number of guests
+- Booking From
+- Booking To
+- Accommodation type
+- Specific treehouse or bunkbed allocation
+- Booking source / team member
+- Booking notes (optional)
+
+## Section B — Accommodation selection
+
+Allow choosing:
+
+- Firefly
+- Sunbird
+- Woodpecker
+- Bunkbeds
+
+Only display accommodations available for the entire selected date range.
+
+If bunkbeds are selected, let the user choose the number of beds and optionally assign them to particular containers or individual bunkbeds.
+
+## Section C — Pricing
+
+Automatically calculate the booking price based on:
+
+- Accommodation
+- Number of guests
+- Number of nights
+- Additional guests
+- Holiday pricing
+- Discounts
+- Food
+- Service charge
+
+Display a live price breakdown that updates instantly when any relevant field changes.
+
+## Section D — Payment details
+
+Fields:
+
+- Advance payment
+- Advance payment date
+- Payment collector
+- Remaining balance
+- Remaining payment amount
+- Remaining payment paid on date
+- Payment status
+
+## Section E — Booking source
+
+Add a searchable dropdown:
+
+**Booking brought by**
+
+Choose from all eligible team members.
+
+Also show their team name.
+
+Add a separate dropdown:
+
+**Payment collected by**
+
+Choose a team member.
+
+These can be two different people.
+
+A booking may have more than one payment collector if installments are collected by different members.
+
+Store accurate attribution for every payment.
+
+---
+
+# 8. AUTOMATIC BOOKING CALCULATION
+
+Build a centralized calculation system.
+
+All monetary values are in Indian rupees (₹).
+
+Use accurate decimal currency calculations.
+
+All prices below are per night unless stated otherwise.
+
+## Treehouse accommodation calculation
+
+For each night:
+
+Base price = ₹6,000
+
+Guests beyond 4 = Number of additional guests × ₹1,500
+
+Nightly treehouse price = Base price + Additional guest charges
+
+Total accommodation amount = Sum of the calculated prices for every occupied night.
+
+Do not charge less than the minimum nightly rate before discounts.
+
+Discounts can reduce the final price, as authorized.
+
+## Bunkbed accommodation calculation
+
+Bunkbed price = Number of occupied beds × ₹1,250 × Number of nights
+
+For bookings that span holiday and normal dates, use the appropriate nightly price for each date.
+
+## Service charge
+
+Apply a **10% service charge on accommodation charges only**.
+
+Do not apply the service charge to food.
+
+By default, calculate service charge on the discounted accommodation subtotal.
+
+Formula:
+
+Service Charge = Discounted Accommodation Subtotal × 10%
+
+Make the service charge percentage editable in Settings.
+
+## Discounts
+
+Discounts are allowed.
+
+Create an easy-to-use discount toggle.
+
+When enabled, show a dropdown with:
+
+- Percentage discount (%)
+- Fixed amount discount (₹)
+
+If percentage is selected, accept a value from 0% to 100%.
+
+If fixed amount is selected, accept a currency value.
+
+Apply the discount to accommodation charges, not food, by default.
+
+Do not allow the resulting accommodation subtotal to become negative.
+
+Immediately recalculate the service charge and total.
+
+Display:
+
+- Original accommodation price
+- Discount type
+- Discount amount
+- Final accommodation subtotal
+- Service charge
+- Food charges
+- Grand total
+
+Keep the discount controls visually compact.
+
+---
+
+# 9. HOLIDAY PRICING
+
+Add a clear toggle labeled:
+
+**Holiday Pricing**
+
+This toggle must be available inside the booking form and guest/booking detail editor.
+
+When enabled, use the configured holiday rates.
+
+Holiday pricing must support:
+
+- Separate treehouse base price
+- Separate price for additional treehouse guests
+- Separate bunkbed price
+- Percentage increase over standard pricing, as an alternative
+
+In Settings, provide a Holiday Pricing section.
+
+Allow an administrator to:
+
+- Set holiday prices
+- Choose holiday dates
+- Define date ranges
+- Enable or disable holiday rates
+- Configure different holiday prices for specific accommodation types
+
+Do not invent higher holiday rates. Initially, holiday rates should match standard rates until an administrator changes them.
+
+Automatically detect configured holiday dates but allow authorized users to manually enable or override holiday pricing when creating a booking.
+
+For bookings with both normal and holiday nights, calculate each night correctly.
+
+Show a breakdown of standard and holiday nights when relevant.
+
+Holiday rates must affect the live booking total.
+
+---
+
+# 10. FOOD MANAGEMENT
+
+Food is optional.
+
+Inside the booking form, create a section labeled:
+
+**Food**
+
+With a toggle/dropdown:
+
+- Availed
+- N/A
+
+When N/A is selected, food charge must be ₹0.
+
+When Availed is selected, display food controls.
+
+## Food pricing
+
+Vegetarian food: **₹400 per person**
+
+Non-vegetarian food: **₹600 per person**
+
+Allow these prices to be updated in Settings.
+
+## Manual guest allocation
+
+Allow users to manually set:
+
+- Number of guests taking vegetarian food
+- Number of guests taking non-vegetarian food
+- Number of guests not taking food
+
+The total number of people availing food must not exceed the number of guests for a single meal.
+
+The number of people taking food does not have to equal the number of people staying.
+
+Example:
+
+Number of guests staying: 6
+
+Vegetarian: 3
+
+Non-vegetarian: 2
+
+Not taking food: 1
+
+Calculation:
+
+3 × ₹400 = ₹1,200
+
+2 × ₹600 = ₹1,200
+
+Total food charge = ₹2,400
+
+## Multiple meals
+
+Support adjustable meal quantities or food service days for bookings requiring more than one meal.
+
+Default to one food serving per selected guest.
+
+Do not automatically charge for every night unless the user explicitly selects that many meals or food days.
+
+Update the total immediately when quantities change.
+
+Food charges must be included in the final booking total.
+
+The 10% accommodation service charge must not be applied to food.
+
+---
+
+# 11. PAYMENT MANAGEMENT
+
+Each booking must support advance payment and remaining payment tracking.
+
+## Primary payment information
+
+Display:
+
+- Grand Total
+- Advance Paid
+- Remaining Amount
+- Amount Collected
+- Outstanding Balance
+- Payment Status
+
+Calculate:
+
+**Remaining Amount = Grand Total − Total Successful Payments**
+
+All payments must be stored individually.
+
+## Advance payment
+
+Fields:
+
+- Advance amount
+- Payment date
+- Collected by
+- Payment method
+- Optional transaction reference
+
+Payment methods:
+
+- UPI
+- Cash
+- Bank Transfer
+- Card
+- Other
+
+## Remaining payment
+
+Fields:
+
+- Remaining payment amount
+- Remaining payment paid on date
+- Collected by
+- Payment method
+
+Support partial payments.
+
+A guest may pay in multiple installments.
+
+Each installment must have:
+
+- Amount
+- Date
+- Collector
+- Payment method
+- Optional remarks
+
+## Automatic payment statuses
+
+Use:
+
+- Unpaid
+- Partially Paid
+- Fully Paid
+- Overdue, when an applicable due date has been set
+
+When payments equal the booking total, automatically mark the booking Fully Paid.
+
+If a booking is edited after receiving payment, recalculate the remaining amount based on the updated total.
+
+Do not silently delete or rewrite historical payments.
+
+Handle excess payments explicitly as an overpayment or refundable credit; do not display a misleading negative remaining balance.
+
+## Payment visibility
+
+Bloombuz administrators must be able to view all payments and collections.
+
+Other users can access only payment data permitted by their team roles.
+
+Track who created, modified, or recorded each payment.
+
+---
+
+# 12. BOOKINGS PAGE
+
+Create a beautiful bookings management screen following the layout in the reference image.
+
+The left side should display bookings in an elegant, translucent table.
+
+The right side should display detailed information about the selected booking.
+
+## Booking table columns
+
+- Guest
+- Accommodation
+- Check-in
+- Check-out
+- Guests
+- Booking amount
+- Advance paid
+- Remaining balance
+- Booking source
+- Payment status
+- Booking status
+
+Allow clicking any booking to open its details.
+
+The selected row should have a subtle highlighted background.
+
+## Booking details side panel
+
+Display:
+
+- Accommodation image
+- Guest name, if authorized
+- Phone number, if authorized
+- Booking dates
+- Number of nights
+- Number of guests
+- Food details
+- Accommodation price
+- Additional person charges
+- Holiday pricing
+- Discounts
+- Service charge
+- Grand total
+- Advance paid
+- Remaining amount
+- Payment records
+- Booking source member
+- Team
+- Payment collectors
+- Notes
+
+Include permission-controlled action buttons:
+
+- Edit Booking
+- Add Payment
+- Mark Checked In
+- Mark Checked Out
+- Cancel Booking
+
+## Search and sorting
+
+Search by:
+
+- Guest name, where authorized
+- Booking ID
+- Phone number, where authorized
+- Accommodation
+- Team member
+
+Filter and sort by:
+
+- Date
+- Accommodation
+- Booking status
+- Payment status
+- Team
+- Member who brought the booking
+- Member who collected money
+- Amount
+- Check-in
+- Check-out
+
+Guest-related searches must not leak private information to restricted users.
+
+---
+
+# 13. TEAM MEMBER BOOKING ATTRIBUTION
+
+Every booking must be attributable to an individual team member.
+
+The field should be called:
+
+**Booking Source**
+
+Provide a dropdown containing members grouped by team.
+
+Example:
+
+Bloombuz
+- Member A
+- Member B
+
+Others
+- Member C
+- Member D
+
+Additional teams should appear automatically.
+
+Store the selected member's unique ID.
+
+Also record:
+
+- Team associated with the booking
+- Person who created the booking
+- Person who generated the lead
+- Person or people who collected payments
+
+These may be different people.
+
+## Member-based filtering
+
+Allow filtering all bookings by member.
+
+Example:
+
+Selecting Member A displays bookings attributed to Member A.
+
+Selecting Member B displays bookings attributed to Member B.
+
+Create member performance views showing, subject to permissions:
+
+- Number of bookings generated
+- Booking value generated
+- Total payments collected
+- Pending amounts associated with their bookings
+- Date range
+
+Avoid double-counting revenue when multiple people collect payments for the same booking.
+
+---
+
+# 14. DASHBOARD — TODAY
+
+Recreate the overall structure of the uploaded reference image for the main dashboard.
+
+## Top heading
+
+Display:
+
+**Today**
+
+Underneath, display the current date and a concise operational summary.
+
+## KPI pills
+
+Use elegant rounded indicators for:
+
+- Today's Arrivals
+- Today's Departures
+- Occupied Treehouses
+- Available Bunkbeds
+- Pending Payments
+
+## Main dashboard table
+
+Show today's arrival and departure activity.
+
+Include:
+
+- Guest
+- Accommodation
+- Arrival/departure date
+- Number of guests
+- Booking status
+- Payment status
+- Booking source
+
+Selecting a booking should display its details in the right-side panel, just like the uploaded reference.
+
+## Dashboard interactions
+
+Provide working tabs for:
+
+- Arrivals
+- Departures
+- Current Guests
+- Upcoming Bookings
+
+Use the same premium translucent layout, pill filters, and selected-row highlighting.
+
+Only display guest information according to the user's permissions.
+
+---
+
+# 15. REVENUE DASHBOARD
+
+Create a Revenue section, accessible only according to roles.
+
+Use the same design language.
+
+## Metrics
+
+Display:
+
+- Total Booking Value
+- Total Payments Received
+- Outstanding Amount
+- Accommodation Revenue
+- Food Revenue
+- Service Charges
+- Discounts Given
+
+Separate booking value from cash actually received.
+
+Use clearly defined date filters so totals are not misleading.
+
+## Revenue filters
+
+- Today
+- This Week
+- This Month
+- Custom Date Range
+- Accommodation
+- Team
+- Booking Source Member
+- Payment Collector
+
+## Visualizations
+
+Include tasteful, minimal charts for:
+
+- Booking value over time
+- Cash collected over time
+- Accommodation-wise revenue
+- Team-wise bookings
+- Member-wise collections
+
+Charts must match the dashboard's visual style.
+
+Use real database records, never hardcoded analytics data.
+
+---
+
+# 16. GUESTS PAGE
+
+Create a searchable guest management page.
+
+For authorized administrators, show guest profiles with:
+
+- Name
+- Phone number
+- Booking history
+- Accommodation history
+- Previous visit dates
+- Payment history
+- Notes
+
+Group repeat bookings associated with the same guest when there is a reliable identifier.
+
+Do not merge two different people merely because their names match.
+
+Provide privacy masking for restricted team members.
+
+Allow authorized staff to open a guest profile and view all related reservations.
+
+Do not add unnecessary mandatory fields.
+
+---
+
+# 17. SETTINGS
+
+Create a comprehensive Settings page.
+
+It must look like the rest of the application.
+
+## Accommodation pricing
+
+Allow editing:
+
+- Treehouse minimum/base price
+- Number of guests included in base price
+- Additional person price
+- Maximum treehouse capacity, subject to physical inventory rules
+- Bunkbed price per person
+- Container bed allocation
+
+Default values:
+
+Treehouse Base: ₹6,000
+
+Included Guests: 4
+
+Additional Guest: ₹1,500
+
+Maximum Guests: 6
+
+Bunkbed: ₹1,250
+
+## Food settings
+
+- Vegetarian food price: ₹400
+- Non-vegetarian food price: ₹600
+
+## Service charge settings
+
+- Service charge percentage: 10%
+
+## Holiday pricing settings
+
+- Holiday treehouse price
+- Holiday additional-person price
+- Holiday bunkbed price
+- Holiday date ranges
+- Holiday pricing mode
+
+## Team settings
+
+- Create team
+- Rename team
+- Invite members
+- Assign team
+- Assign team admin
+- Remove members
+- Manage roles
+
+## Application settings
+
+- Resort name: Earthalive
+- Currency: INR
+- Timezone: Asia/Kolkata
+- Default calendar view
+- Notification preferences
+
+Settings that impact money or security must be restricted to appropriately authorized administrators.
+
+When pricing settings change, existing bookings must retain the prices originally agreed upon unless explicitly recalculated by an authorized user.
+
+Store a pricing snapshot for each booking.
+
+---
+
+# 18. BOOKING AND PAYMENT HISTORY
+
+Every booking should have an activity timeline.
+
+Record events such as:
+
+- Booking created
+- Booking updated
+- Accommodation changed
+- Dates changed
+- Guest count changed
+- Discount applied
+- Holiday rate applied
+- Payment recorded
+- Payment corrected
+- Booking cancelled
+- Guest checked in
+- Guest checked out
+
+Store:
+
+- Event type
+- Previous values where applicable
+- New values
+- User who made the change
+- Date and time
+
+Do not allow ordinary users to erase audit history.
+
+---
+
+# 19. DATABASE ARCHITECTURE
+
+Use a production-ready backend with persistent storage.
+
+Preferred stack:
+
+- React
+- TypeScript
+- Tailwind CSS
+- Firebase Authentication with Google Sign-In
+- Firestore
+- Firebase Cloud Functions or equivalent trusted server-side functions
+- Real-time Firestore listeners
+- Secure Firestore Security Rules
+
+If a different backend is more appropriate in the Google AI Studio environment, use an equivalent secure implementation.
+
+## Suggested data entities
+
+Create proper database collections/tables for:
+
+**Users**
+- User ID
+- Google email
+- Name
+- Profile image
+- Team ID
+- Role
+- Account status
+
+**Teams**
+- Team ID
+- Team name
+- Team admins
+- Members
+- Creation date
+
+**Accommodations**
+- Accommodation ID
+- Name
+- Type
+- Maximum capacity
+- Base pricing
+- Availability status
+
+**Bunkbeds**
+- Bed ID
+- Container ID
+- Bed label
+- Availability/maintenance status
+
+**Bookings**
+- Booking ID
+- Guest information
+- Accommodation assignments
+- Check-in
+- Check-out
+- Number of nights
+- Guest count
+- Pricing snapshot
+- Food quantities
+- Holiday pricing
+- Discount
+- Service charge
+- Total
+- Booking status
+- Booking source member ID
+- Booking team ID
+- Created by
+- Creation timestamp
+
+**Payments**
+- Payment ID
+- Booking ID
+- Payment amount
+- Payment date
+- Payment method
+- Collected by
+- Recorded by
+- Payment status
+- Transaction reference
+
+**Pricing Configurations**
+- Base prices
+- Additional guest rates
+- Food prices
+- Service charge
+- Holiday rates
+- Effective dates
+
+**Maintenance Blocks**
+- Accommodation or bed
+- Start date
+- End date
+- Reason
+
+**Audit Logs**
+- Action
+- User
+- Timestamp
+- Previous/new values
+
+**Invitations**
+- Invited email
+- Assigned team
+- Assigned role
+- Inviter
+- Status
+- Expiration
+
+Design appropriate relationships and indexes.
+
+Use actual persistent records rather than mock arrays or browser localStorage as the source of truth.
+
+---
+
+# 20. DATA VALIDATION AND BOOKING SAFETY
+
+Implement strict validation.
+
+The application must:
+
+1. Reject check-out dates that are not after check-in dates.
+2. Never allow more than six guests per treehouse.
+3. Never allocate more bunkbeds than available.
+4. Prevent overlapping active treehouse bookings.
+5. Prevent negative guest counts and payment amounts.
+6. Validate all discounts before saving.
+7. Validate food quantities.
+8. Handle simultaneous booking attempts safely.
+9. Confirm payment changes on the backend.
+10. Use secure server-side calculations for final booking totals.
+11. Preserve existing records during pricing updates.
+12. Validate user permissions before every sensitive operation.
+13. Prevent direct database access from bypassing role permissions.
+14. Store all timestamps consistently and display dates in the Asia/Kolkata timezone.
+
+Use transaction-safe reservation writes.
+
+The app should be reliable even when multiple team members are booking at the same time.
+
+---
+
+# 21. EXAMPLE CALCULATIONS TO IMPLEMENT AND TEST
+
+## Example A — Treehouse, 2 guests, 1 night
+
+Accommodation: Firefly
+
+Guests: 2
+
+Accommodation: ₹6,000
+
+Service charge (10%): ₹600
+
+Food: ₹0
+
+**Grand Total: ₹6,600**
+
+## Example B — Treehouse, 6 guests, 1 night
+
+Accommodation: Sunbird
+
+Guests: 6
+
+Base: ₹6,000
+
+Additional guests: 2 × ₹1,500 = ₹3,000
+
+Accommodation total: ₹9,000
+
+Service charge: ₹900
+
+Food: ₹0
+
+**Grand Total: ₹9,900**
+
+## Example C — Treehouse with food and advance
+
+Accommodation: Woodpecker
+
+Guests: 5
+
+Nights: 2
+
+Accommodation: ₹7,500 × 2 = ₹15,000
+
+Vegetarian food servings: 3 × ₹400 = ₹1,200
+
+Non-vegetarian food servings: 2 × ₹600 = ₹1,200
+
+Food total: ₹2,400
+
+Service charge: ₹1,500
+
+Grand Total: ₹18,900
+
+Advance Paid: ₹5,000
+
+**Remaining Amount: ₹13,900**
+
+## Example D — Bunkbed booking
+
+Guests: 4
+
+Bunkbeds: 4
+
+Nights: 1
+
+Bunkbed charge: 4 × ₹1,250 = ₹5,000
+
+Service charge: ₹500
+
+Food: ₹0
+
+**Grand Total: ₹5,500**
+
+## Example E — Treehouse with percentage discount
+
+Accommodation: Firefly
+
+Guests: 4
+
+Nights: 1
+
+Original accommodation: ₹6,000
+
+Discount: 10%
+
+Discount amount: ₹600
+
+Discounted accommodation: ₹5,400
+
+Service charge: ₹540
+
+Food: ₹0
+
+**Grand Total: ₹5,940**
+
+All these cases must produce the exact correct results.
+
+---
+
+# 22. USER EXPERIENCE REQUIREMENTS
+
+Make the platform very simple to operate.
+
+It should be usable by resort staff with no technical knowledge.
+
+Requirements:
+
+- Creating a booking should take as few steps as possible.
+- Prices should calculate automatically.
+- Changing the guest count should instantly update charges.
+- Changing dates should instantly update prices and availability.
+- Selecting holiday pricing should recalculate the total.
+- Changing food quantities should recalculate food charges.
+- Adding a payment should recalculate the outstanding balance.
+- Every dropdown should be easy to search.
+- Forms must have clear validation.
+- Successful actions should display elegant confirmation messages.
+- Use informative empty states.
+- Use clean loading states and skeletons.
+- Avoid unnecessary popups.
+- Do not show fake data as real bookings.
+
+Show an appropriate confirmation before cancellation or irreversible changes.
+
+Use toast notifications and compact overlays consistent with the reference UI.
+
+---
+
+# 23. IMPORTANT: DO NOT HARDCODE DEMO BOOKINGS
+
+The application should initially have no guest bookings, no fictional revenue, and no preloaded payment history.
+
+Preconfigure only the actual resort inventory and requested base prices:
+
+- 24 bunkbeds
+- 4 containers
+- Firefly
+- Sunbird
+- Woodpecker
+- Treehouse base ₹6,000
+- Additional guest ₹1,500
+- Bunkbed ₹1,250
+- Vegetarian food ₹400
+- Non-vegetarian food ₹600
+- Service charge 10%
+
+All operational metrics must be calculated from real records.
+
+Show clean empty states until actual bookings are created.
+
+---
+
+# 24. FINAL DEVELOPMENT REQUIREMENTS
+
+Build the complete working application.
+
+Do not produce only a static interface or a nonfunctional prototype.
+
+Every button, filter, dropdown, search field, calendar interaction, and form must perform its intended action.
+
+Prioritize:
+
+1. Exact visual fidelity to the provided UI reference.
+2. Secure Google authentication.
+3. Accurate team permissions and privacy masking.
+4. Real-time accommodation availability.
+5. Reliable booking creation and editing.
+6. Automatic price calculations.
+7. Food and discount management.
+8. Advance and remaining payment tracking.
+9. Member-based booking and collection attribution.
+10. Revenue reporting and settings.
+
+Separate UI components, business logic, database access, and security rules properly.
+
+Use reusable components and a consistent design system.
+
+Include a working Firebase setup/configuration flow, required environment variables, security rules, indexes, and clear instructions for enabling Google Sign-In.
+
+If Firebase configuration or credentials have not yet been provided, display an honest setup state. Do not fake successful authentication or pretend cloud synchronization is active.
+
+Ensure the system remains fully functional after deployment.
+
+## Testing requirements
+
+Verify:
+
+- Google Sign-In works after configuration.
+- Uninvited users cannot access private data.
+- Bloombuz ownership cannot be hijacked.
+- Others cannot access unmasked private guest information.
+- Calendar availability is accurate.
+- Double bookings cannot occur.
+- Treehouse prices are calculated correctly.
+- Bunkbed prices are calculated correctly.
+- Holiday pricing updates calculations.
+- Discounts calculate correctly.
+- Food quantities calculate correctly.
+- Service charge applies only to accommodation.
+- Advance and remaining payments calculate correctly.
+- All payment records persist.
+- Bookings synchronize across accounts.
+- Member filters return the correct bookings.
+- Price setting updates do not rewrite historical prices.
+- The UI works well on desktop and mobile.
+
+## Final instruction
+
+Build Earthalive as a real, premium, production-quality resort operations platform.
+
+**The uploaded design screenshot is the primary visual authority.**
+
+Follow its distinctive rounded navigation, soft mint panels, nature-inspired imagery, translucent booking table, right-side detail panel, elegant information density, and clean luxury aesthetic throughout the application.
+
+Use the uploaded Earthalive logo for branding.
+
+Do not replace the requested design with your own generic dashboard style.
+
+Do not replace the requested business features with the sample features visible in the reference image.
+
+The final result should look like the reference design but function entirely as Earthalive's custom resort booking and management system.

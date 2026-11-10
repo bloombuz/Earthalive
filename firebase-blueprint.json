@@ -1,0 +1,180 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Earthalive staff and administrator user profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 128 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "photoURL": { "type": "string", "maxLength": 512 },
+        "teamId": { "type": "string", "maxLength": 64 },
+        "teamName": { "type": "string", "maxLength": 64 },
+        "role": { "type": "string", "enum": ["super_admin", "team_admin", "member", "pending"] },
+        "status": { "type": "string", "enum": ["active", "pending", "disabled"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "role", "status"]
+    },
+    "Team": {
+      "title": "Team",
+      "description": "Resort management team",
+      "type": "object",
+      "properties": {
+        "teamId": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 64 },
+        "adminUserIds": { "type": "array" },
+        "memberUserIds": { "type": "array" },
+        "isProtected": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "createdBy": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["teamId", "name"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Resort reservation entity",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "bookingNumber": { "type": "string", "maxLength": 32 },
+        "guestName": { "type": "string", "maxLength": 128 },
+        "guestPhone": { "type": "string", "maxLength": 32 },
+        "guestCount": { "type": "number" },
+        "checkInDate": { "type": "string", "maxLength": 16 },
+        "checkOutDate": { "type": "string", "maxLength": 16 },
+        "nights": { "type": "number" },
+        "accommodationId": { "type": "string", "maxLength": 64 },
+        "accommodationName": { "type": "string", "maxLength": 64 },
+        "containerIds": { "type": "array" },
+        "bedNumbers": { "type": "array" },
+        "isHolidayPricing": { "type": "boolean" },
+        "discountType": { "type": "string", "enum": ["none", "percentage", "fixed"] },
+        "discountValue": { "type": "number" },
+        "accommodationSubtotal": { "type": "number" },
+        "discountAmount": { "type": "number" },
+        "discountedAccommodationSubtotal": { "type": "number" },
+        "serviceChargeRate": { "type": "number" },
+        "serviceChargeAmount": { "type": "number" },
+        "foodAvailed": { "type": "boolean" },
+        "foodDetails": { "type": "object" },
+        "grandTotal": { "type": "number" },
+        "advancePaid": { "type": "number" },
+        "remainingAmount": { "type": "number" },
+        "paymentStatus": { "type": "string", "enum": ["unpaid", "partially_paid", "paid", "overdue"] },
+        "bookingStatus": { "type": "string", "enum": ["confirmed", "checked_in", "checked_out", "cancelled"] },
+        "bookingSourceMemberId": { "type": "string", "maxLength": 128 },
+        "bookingSourceMemberName": { "type": "string", "maxLength": 128 },
+        "bookingTeamId": { "type": "string", "maxLength": 64 },
+        "bookingTeamName": { "type": "string", "maxLength": 64 },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "createdBy": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "checkInDate", "checkOutDate", "accommodationId", "grandTotal", "bookingStatus"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Payment installment or advance record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "bookingId": { "type": "string", "maxLength": 64 },
+        "amount": { "type": "number" },
+        "paymentDate": { "type": "string", "maxLength": 32 },
+        "paymentMethod": { "type": "string", "maxLength": 32 },
+        "collectedByMemberId": { "type": "string", "maxLength": 128 },
+        "collectedByMemberName": { "type": "string", "maxLength": 128 },
+        "transactionRef": { "type": "string", "maxLength": 128 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "recordedBy": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "bookingId", "amount", "paymentDate", "paymentMethod", "collectedByMemberId"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Activity history event for booking actions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "bookingId": { "type": "string", "maxLength": 64 },
+        "action": { "type": "string", "maxLength": 64 },
+        "changedBy": { "type": "string", "maxLength": 128 },
+        "changedByName": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string" },
+        "details": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "bookingId", "action", "timestamp"]
+    },
+    "PricingConfig": {
+      "title": "PricingConfig",
+      "description": "Global rates and holiday pricing configurations",
+      "type": "object",
+      "properties": {
+        "treehouseBasePrice": { "type": "number" },
+        "treehouseBaseGuests": { "type": "number" },
+        "treehouseExtraGuestPrice": { "type": "number" },
+        "treehouseMaxGuests": { "type": "number" },
+        "bunkbedPricePerPerson": { "type": "number" },
+        "serviceChargePercent": { "type": "number" },
+        "vegFoodPrice": { "type": "number" },
+        "nonVegFoodPrice": { "type": "number" },
+        "holidayPricing": { "type": "object" },
+        "updatedAt": { "type": "string" },
+        "updatedBy": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["treehouseBasePrice", "bunkbedPricePerPerson", "serviceChargePercent"]
+    },
+    "MaintenanceBlock": {
+      "title": "MaintenanceBlock",
+      "description": "Internal maintenance block that holds inventory without guest bookings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "accommodationId": { "type": "string", "maxLength": 64 },
+        "containerId": { "type": "string", "maxLength": 64 },
+        "bedNumbers": { "type": "array" },
+        "startDate": { "type": "string", "maxLength": 16 },
+        "endDate": { "type": "string", "maxLength": 16 },
+        "reason": { "type": "string", "maxLength": 256 },
+        "createdBy": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "accommodationId", "startDate", "endDate"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles and RBAC assignment"
+    },
+    "/teams/{teamId}": {
+      "schema": { "$ref": "#/entities/Team" },
+      "description": "Resort management teams"
+    },
+    "/bookings/{bookingId}": {
+      "schema": { "$ref": "#/entities/Booking" },
+      "description": "Resort reservations"
+    },
+    "/payments/{paymentId}": {
+      "schema": { "$ref": "#/entities/Payment" },
+      "description": "Payment records and installments"
+    },
+    "/auditLogs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Historical audit trails"
+    },
+    "/settings/pricing": {
+      "schema": { "$ref": "#/entities/PricingConfig" },
+      "description": "Pricing rates and holiday calendar"
+    },
+    "/maintenance/{blockId}": {
+      "schema": { "$ref": "#/entities/MaintenanceBlock" },
+      "description": "Accommodation maintenance blocks"
+    }
+  }
+}

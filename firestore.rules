@@ -1,0 +1,93 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isBootstrapAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'hyghtable@gmail.com'
+      );
+    }
+
+    function getUserDoc(uid) {
+      return get(/databases/$(database)/documents/users/$(uid)).data;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        isBootstrapAdmin() ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         (getUserDoc(request.auth.uid).role == 'admin' || getUserDoc(request.auth.uid).role == 'super_admin'))
+      );
+    }
+
+    function isActiveStaffOrAdmin() {
+      return isSignedIn() && (
+        isAdmin() ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         getUserDoc(request.auth.uid).status != 'disabled')
+      );
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Connection testing endpoint
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Bookings collection
+    match /bookings/{bookingId} {
+      allow read: if isSignedIn();
+      allow create: if isActiveStaffOrAdmin();
+      allow update: if isActiveStaffOrAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Payments collection
+    match /payments/{paymentId} {
+      allow read: if isSignedIn();
+      allow create: if isActiveStaffOrAdmin();
+      allow update: if isActiveStaffOrAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Audit logs
+    match /auditLogs/{logId} {
+      allow read: if isSignedIn();
+      allow create: if isActiveStaffOrAdmin();
+      allow update, delete: if false; // Immutable audit log
+    }
+
+    // Settings (Pricing, holiday rates)
+    match /settings/{settingId} {
+      allow read: if true; // Public or staff can read accommodation base rates
+      allow write: if isAdmin();
+    }
+
+    // Maintenance blocks
+    match /maintenance/{blockId} {
+      allow read: if true;
+      allow write: if isActiveStaffOrAdmin();
+    }
+  }
+}
